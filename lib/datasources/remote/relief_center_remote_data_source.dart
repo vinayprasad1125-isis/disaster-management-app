@@ -1,0 +1,5 @@
+import '../../models/relief_center_model.dart';
+
+abstract class ReliefCenterRemoteDataSource {
+  Future<List<ReliefCenter>> getNearbyReliefCenters(double lat, double lng);
+}
