@@ -1,0 +1,26 @@
+children: [
+  card(
+    context,
+    Icons.sos,
+    'Emergency SOS',
+    Colors.red,
+    () => Navigator.pushNamed(context, '/sos'),
+  ),
+  card(
+    context,
+    Icons.contact_phone,
+    'Emergency Contacts',
+    Colors.green,
+    () => Navigator.pushNamed(context, '/contacts'),
+  ),
+  card(
+    context,
+    Icons.menu_book,
+    'Offline Resources',
+    Colors.blue,
+    () => Navigator.pushNamed(context, '/resources'),
+  ),
+  card(context, Icons.chat, 'Offline Chat', Colors.orange, () {}),
+  card(context, Icons.map, 'Disaster Map', Colors.teal, () {}),
+  card(context, Icons.cloud, 'Weather', Colors.indigo, () {}),
+],
