@@ -20,6 +20,10 @@ import '../../features/profile/presentation/screens/profile_screen.dart';
 import '../../features/profile/presentation/screens/settings_screen.dart';
 import '../../features/offline/presentation/screens/offline_guides_screen.dart';
 import '../../features/chat/presentation/screens/ai_assistant_screen.dart';
+import '../../features/offline_communication/presentation/screens/offline_communication_home.dart';
+import '../../features/offline_communication/presentation/screens/nearby_devices_screen.dart';
+import '../../features/offline_communication/presentation/screens/emergency_calling_screen.dart';
+import '../../features/offline_communication/presentation/screens/emergency_chat_screen.dart';
 
 // Assuming an auth provider exists to check if user is logged in
 // For now, we simulate an unauthenticated state for route guards
@@ -150,6 +154,28 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.chat,
         builder: (context, state) => const PlaceholderScreen(title: 'Chat'),
+      ),
+      GoRoute(
+        path: AppRoutes.offlineCommunication,
+        builder: (context, state) => const OfflineCommunicationHome(),
+      ),
+      GoRoute(
+        path: AppRoutes.nearbyDevices,
+        builder: (context, state) => const NearbyDevicesScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.offlineCall,
+        builder: (context, state) {
+          final peerName = state.extra as String? ?? 'Unknown Peer';
+          return EmergencyCallingScreen(peerName: peerName);
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.offlineChat,
+        builder: (context, state) {
+          final peerName = state.extra as String? ?? 'Unknown Peer';
+          return EmergencyChatScreen(peerName: peerName);
+        },
       ),
     ],
   );

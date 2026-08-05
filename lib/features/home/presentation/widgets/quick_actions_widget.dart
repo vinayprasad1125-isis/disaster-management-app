@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/routes/app_routes.dart';
+import '../../../offline_communication/presentation/widgets/sos_bottom_sheet.dart';
 
 class QuickActionsWidget extends StatelessWidget {
   const QuickActionsWidget({super.key});
@@ -27,10 +28,16 @@ class QuickActionsWidget extends StatelessWidget {
               onTap: () => context.push(AppRoutes.reports),
             ),
             _ActionItem(
+              icon: Icons.wifi_off_rounded,
+              label: 'Offline Comm.',
+              color: Colors.orange.shade700,
+              onTap: () => context.push(AppRoutes.offlineCommunication),
+            ),
+            _ActionItem(
               icon: Icons.sos,
               label: 'SOS',
               color: Theme.of(context).colorScheme.error,
-              onTap: () => context.push(AppRoutes.sos),
+              onTap: () => SOSBottomSheet.show(context),
             ),
             _ActionItem(
               icon: Icons.map,
