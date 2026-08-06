@@ -7,6 +7,9 @@ import 'screens/home_screen.dart';
 import 'screens/sos_screen.dart';
 import 'screens/emergency_contacts_screen.dart';
 import 'screens/offline_resources_screen.dart';
+import 'screens/offline_chat_screen.dart';
+'/offlineChat': (context) => const OfflineChatScreen(),
+
 
 void main() {
   runApp(const DisasterManagementApp());
@@ -36,4 +39,8 @@ class DisasterManagementApp extends StatelessWidget {
       },
     );
   }
-}
+}Navigator.pushNamed(
+  context,
+  '/offlineChat',
+);
+
