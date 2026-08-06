@@ -2,13 +2,34 @@ import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  Widget card(
-      BuildContext context,
-      IconData icon,
-      String title,
-      Color color,
-      ) {
+Widget card(
+  BuildContext context,
+  IconData icon,
+  String title,
+  Color color,
+  VoidCallback onTap,
+) {
+  return Card(
+    child: InkWell(
+      onTap: onTap,
+      child: SizedBox(
+        height: 130,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 45, color: color),
+            const SizedBox(height: 10),
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
 
     return Card(
 
