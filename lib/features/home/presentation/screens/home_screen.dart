@@ -6,6 +6,8 @@ import '../widgets/quick_actions_widget.dart';
 import '../widgets/custom_bottom_nav_bar.dart';
 import '../../../../viewmodels/weather_viewmodel.dart';
 import '../../../../viewmodels/alerts_viewmodel.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../core/routes/app_routes.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -31,7 +33,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     setState(() {
       _currentIndex = index;
     });
-    // Add routing logic here if needed
+    switch (index) {
+      case 1:
+        context.push(AppRoutes.maps);
+        break;
+      case 2:
+        context.push(AppRoutes.reports);
+        break;
+      case 3:
+        context.push(AppRoutes.aiAssistant);
+        break;
+    }
   }
 
   @override

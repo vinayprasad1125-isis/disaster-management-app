@@ -10,6 +10,8 @@ class MapMarker with _$MapMarker {
     required String title,
     required String type,
     required String locationId,
+    required double lat,
+    required double lng,
   }) = _MapMarker;
 
   factory MapMarker.fromJson(Map<String, dynamic> json) =>

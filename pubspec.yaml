@@ -34,6 +34,14 @@ dependencies:
   connectivity_plus: ^6.0.3
   
   cupertino_icons: ^1.0.6
+  http: ^1.6.0
+  socket_io_client: ^3.1.6
+  firebase_core: ^4.13.0
+  firebase_auth: ^6.5.7
+  firebase_messaging: ^16.5.0
+  flutter_map: ^8.3.1
+  latlong2: ^0.10.1
+  tflite_flutter: ^0.11.0
 
 dev_dependencies:
   flutter_test:
@@ -56,3 +64,5 @@ flutter:
     - assets/illustrations/
     - assets/logos/
     - assets/placeholders/
+    - assets/ml/
+    - assets/offline_manuals/
