@@ -21,76 +21,76 @@ import '../../repositories/government_alert_repository.dart';
 import '../../repositories/route_repository.dart';
 
 // Import Mocks
-import '../../repositories/mock/mock_auth_repository.dart';
-import '../../repositories/mock/mock_weather_repository.dart';
-import '../../repositories/mock/mock_alert_repository.dart';
-import '../../repositories/mock/mock_notification_repository.dart';
-import '../../repositories/mock/mock_map_repository.dart';
-import '../../repositories/mock/mock_shelter_repository.dart';
-import '../../repositories/mock/mock_volunteer_repository.dart';
-import '../../repositories/mock/mock_relief_center_repository.dart';
-import '../../repositories/mock/mock_report_repository.dart';
-import '../../repositories/mock/mock_sos_repository.dart';
-import '../../repositories/mock/mock_emergency_contact_repository.dart';
-import '../../repositories/mock/mock_profile_repository.dart';
-import '../../repositories/mock/mock_settings_repository.dart';
-import '../../repositories/mock/mock_offline_repository.dart';
-import '../../repositories/mock/mock_ai_repository.dart';
-import '../../repositories/mock/mock_chat_repository.dart';
-import '../../repositories/mock/mock_government_alert_repository.dart';
-import '../../repositories/mock/mock_route_repository.dart';
+import '../../repositories/api/api_auth_repository.dart';
+import '../../repositories/api/api_weather_repository.dart';
+import '../../repositories/api/api_alert_repository.dart';
+import '../../repositories/api/api_notification_repository.dart';
+import '../../repositories/api/api_map_repository.dart';
+import '../../repositories/api/api_shelter_repository.dart';
+import '../../repositories/api/api_volunteer_repository.dart';
+import '../../repositories/api/api_relief_center_repository.dart';
+import '../../repositories/api/api_report_repository.dart';
+import '../../repositories/api/api_sos_repository.dart';
+import '../../repositories/api/api_emergency_contact_repository.dart';
+import '../../repositories/api/api_profile_repository.dart';
+import '../../repositories/api/api_settings_repository.dart';
+import '../../repositories/api/api_offline_repository.dart';
+import '../../repositories/api/api_ai_repository.dart';
+import '../../repositories/api/api_chat_repository.dart';
+import '../../repositories/api/api_government_alert_repository.dart';
+import '../../repositories/api/api_route_repository.dart';
 
 final authRepositoryProvider = Provider<AuthRepository>(
-  (ref) => MockAuthRepository(),
+  (ref) => ApiAuthRepository(),
 );
 final weatherRepositoryProvider = Provider<WeatherRepository>(
-  (ref) => MockWeatherRepository(),
+  (ref) => ApiWeatherRepository(),
 );
 final alertRepositoryProvider = Provider<AlertRepository>(
-  (ref) => MockAlertRepository(),
+  (ref) => ApiAlertRepository(),
 );
 final notificationRepositoryProvider = Provider<NotificationRepository>(
-  (ref) => MockNotificationRepository(),
+  (ref) => ApiNotificationRepository(),
 );
 final mapRepositoryProvider = Provider<MapRepository>(
-  (ref) => MockMapRepository(),
+  (ref) => ApiMapRepository(),
 );
 final shelterRepositoryProvider = Provider<ShelterRepository>(
-  (ref) => MockShelterRepository(),
+  (ref) => ApiShelterRepository(),
 );
 final volunteerRepositoryProvider = Provider<VolunteerRepository>(
-  (ref) => MockVolunteerRepository(),
+  (ref) => ApiVolunteerRepository(),
 );
 final reliefCenterRepositoryProvider = Provider<ReliefCenterRepository>(
-  (ref) => MockReliefCenterRepository(),
+  (ref) => ApiReliefCenterRepository(),
 );
 final reportRepositoryProvider = Provider<ReportRepository>(
-  (ref) => MockReportRepository(),
+  (ref) => ApiReportRepository(),
 );
 final sosRepositoryProvider = Provider<SOSRepository>(
-  (ref) => MockSOSRepository(),
+  (ref) => ApiSOSRepository(),
 );
 final emergencyContactRepositoryProvider = Provider<EmergencyContactRepository>(
-  (ref) => MockEmergencyContactRepository(),
+  (ref) => ApiEmergencyContactRepository(),
 );
 final profileRepositoryProvider = Provider<ProfileRepository>(
-  (ref) => MockProfileRepository(),
+  (ref) => ApiProfileRepository(),
 );
 final settingsRepositoryProvider = Provider<SettingsRepository>(
-  (ref) => MockSettingsRepository(),
+  (ref) => ApiSettingsRepository(),
 );
 final offlineRepositoryProvider = Provider<OfflineRepository>(
-  (ref) => MockOfflineRepository(),
+  (ref) => ApiOfflineRepository(),
 );
 final aiRepositoryProvider = Provider<AIRepository>(
-  (ref) => MockAIRepository(),
+  (ref) => ApiAIRepository(),
 );
 final chatRepositoryProvider = Provider<ChatRepository>(
-  (ref) => MockChatRepository(),
+  (ref) => ApiChatRepository(),
 );
 final governmentAlertRepositoryProvider = Provider<GovernmentAlertRepository>(
-  (ref) => MockGovernmentAlertRepository(),
+  (ref) => ApiGovernmentAlertRepository(),
 );
 final routeRepositoryProvider = Provider<RouteRepository>(
-  (ref) => MockRouteRepository(),
+  (ref) => ApiRouteRepository(),
 );

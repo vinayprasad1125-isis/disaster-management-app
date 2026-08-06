@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../viewmodels/sos_viewmodel.dart';
 import '../../../../models/sos_model.dart';
+import '../../../offline_communication/presentation/widgets/sos_bottom_sheet.dart';
 
 class SOSScreen extends ConsumerStatefulWidget {
   const SOSScreen({super.key});
@@ -37,24 +38,6 @@ class _SOSScreenState extends ConsumerState<SOSScreen>
     _timer?.cancel();
     _pulseController.dispose();
     super.dispose();
-  }
-
-  void _startCountdown() {
-    setState(() {
-      _isCountdownActive = true;
-      _countdown = 5;
-    });
-
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_countdown > 1) {
-        setState(() {
-          _countdown--;
-        });
-      } else {
-        _timer?.cancel();
-        _triggerSOS();
-      }
-    });
   }
 
   void _cancelCountdown() {
@@ -173,7 +156,7 @@ class _SOSScreenState extends ConsumerState<SOSScreen>
                 ScaleTransition(
                   scale: _pulseAnimation,
                   child: GestureDetector(
-                    onTap: _startCountdown,
+                    onTapDown: (_) => SOSBottomSheet.show(context),
                     child: Container(
                       width: 200,
                       height: 200,

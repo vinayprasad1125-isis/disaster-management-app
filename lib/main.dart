@@ -4,7 +4,16 @@ import 'core/theme/app_theme.dart';
 import 'providers/theme_provider.dart';
 import 'core/routes/app_router.dart';
 
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await Hive.initFlutter();
   runApp(const ProviderScope(child: MyApp()));
 }
 

@@ -31,4 +31,10 @@ class AppRoutes {
   // AI & Chat
   static const String aiAssistant = '/ai-assistant';
   static const String chat = '/chat';
+
+  // Offline Communication Feature
+  static const String offlineCommunication = '/offline-communication';
+  static const String nearbyDevices = '/nearby-devices';
+  static const String offlineCall = '/offline-call';
+  static const String offlineChat = '/offline-chat';
 }

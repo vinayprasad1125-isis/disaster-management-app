@@ -1,0 +1,242 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ENUMS
+enum Role {
+  CITIZEN
+  VOLUNTEER
+  ADMIN
+}
+
+enum DisasterType {
+  FLOOD
+  EARTHQUAKE
+  CYCLONE
+  LANDSLIDE
+  WILDFIRE
+  FIRE
+  ROAD_BLOCK
+  COLLAPSED_BUILDING
+  POWER_OUTAGE
+}
+
+enum ReportStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+enum SOSPriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum SOSStatus {
+  ACTIVE
+  ASSIGNED
+  RESOLVED
+  CANCELLED
+}
+
+// MODELS
+model User {
+  id             String   @id @default(uuid())
+  firebaseUid    String   @unique
+  email          String   @unique
+  name           String?
+  role           Role     @default(CITIZEN)
+  phone          String?
+  profileImage   String?
+  fcmToken       String?
+  isActive       Boolean  @default(true)
+  isGuest        Boolean  @default(false)
+  currentLat     Float?
+  currentLng     Float?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  
+  // Relations
+  emergencyContacts EmergencyContact[]
+  reports          DisasterReport[]
+  sosRequests      SOSRequest[]
+  notifications    Notification[]
+  chatMessages     ChatMessage[]
+  volunteerRequests VolunteerRequest[]
+  assignedSOS      SOSRequest[] @relation("RescueTeamToSOS")
+}
+
+model EmergencyContact {
+  id        String   @id @default(uuid())
+  userId    String
+  name      String
+  phone     String
+  relation  String?
+  createdAt DateTime @default(now())
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model DisasterReport {
+  id            String       @id @default(uuid())
+  reporterId    String
+  type          DisasterType
+  description   String
+  severity      Int          // 1 to 5
+  latitude      Float
+  longitude     Float
+  status        ReportStatus @default(PENDING)
+  images        String[]
+  videos        String[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  reporter      User         @relation(fields: [reporterId], references: [id], onDelete: Cascade)
+
+  @@index([latitude, longitude])
+  @@index([reporterId])
+}
+
+model SOSRequest {
+  id               String      @id @default(uuid())
+  requesterId      String
+  latitude         Float
+  longitude        Float
+  priority         SOSPriority @default(HIGH)
+  status           SOSStatus   @default(ACTIVE)
+  rescueTeamId     String?
+  estimatedTimeMins Int?
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  requester        User        @relation(fields: [requesterId], references: [id], onDelete: Cascade)
+  rescueTeam       User?       @relation("RescueTeamToSOS", fields: [rescueTeamId], references: [id], onDelete: SetNull)
+
+  @@index([latitude, longitude])
+  @@index([status])
+}
+
+model Shelter {
+  id               String   @id @default(uuid())
+  name             String
+  latitude         Float
+  longitude        Float
+  capacity         Int
+  currentOccupancy Int      @default(0)
+  hasMedical       Boolean  @default(false)
+  hasFood          Boolean  @default(false)
+  hasWater         Boolean  @default(false)
+  contactPhone     String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([latitude, longitude])
+}
+
+model Hospital {
+  id               String   @id @default(uuid())
+  name             String
+  latitude         Float
+  longitude        Float
+  capacity         Int
+  availableBeds    Int
+  contactPhone     String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([latitude, longitude])
+}
+
+model PoliceStation {
+  id               String   @id @default(uuid())
+  name             String
+  latitude         Float
+  longitude        Float
+  contactPhone     String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([latitude, longitude])
+}
+
+model ReliefCenter {
+  id               String   @id @default(uuid())
+  name             String
+  latitude         Float
+  longitude        Float
+  foodAvailable    Boolean  @default(true)
+  waterAvailable   Boolean  @default(true)
+  medicineAvailable Boolean @default(true)
+  contactPhone     String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([latitude, longitude])
+}
+
+model GovernmentAlert {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  source      String
+  severity    String
+  expiresAt   DateTime?
+  createdAt   DateTime @default(now())
+}
+
+model WeatherAlert {
+  id          String   @id @default(uuid())
+  type        String
+  description String
+  severity    String
+  latitude    Float?
+  longitude   Float?
+  createdAt   DateTime @default(now())
+
+  @@index([latitude, longitude])
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  title     String
+  body      String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isRead])
+}
+
+model ChatMessage {
+  id        String   @id @default(uuid())
+  senderId  String
+  roomId    String
+  text      String
+  createdAt DateTime @default(now())
+
+  sender    User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([roomId])
+}
+
+model VolunteerRequest {
+  id          String   @id @default(uuid())
+  userId      String
+  skills      String[]
+  status      String   @default("PENDING")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

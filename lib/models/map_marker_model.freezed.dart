@@ -25,6 +25,8 @@ mixin _$MapMarker {
   String get title => throw _privateConstructorUsedError;
   String get type => throw _privateConstructorUsedError;
   String get locationId => throw _privateConstructorUsedError;
+  double get lat => throw _privateConstructorUsedError;
+  double get lng => throw _privateConstructorUsedError;
 
   /// Serializes this MapMarker to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -41,7 +43,14 @@ abstract class $MapMarkerCopyWith<$Res> {
   factory $MapMarkerCopyWith(MapMarker value, $Res Function(MapMarker) then) =
       _$MapMarkerCopyWithImpl<$Res, MapMarker>;
   @useResult
-  $Res call({String id, String title, String type, String locationId});
+  $Res call({
+    String id,
+    String title,
+    String type,
+    String locationId,
+    double lat,
+    double lng,
+  });
 }
 
 /// @nodoc
@@ -63,6 +72,8 @@ class _$MapMarkerCopyWithImpl<$Res, $Val extends MapMarker>
     Object? title = null,
     Object? type = null,
     Object? locationId = null,
+    Object? lat = null,
+    Object? lng = null,
   }) {
     return _then(
       _value.copyWith(
@@ -82,6 +93,14 @@ class _$MapMarkerCopyWithImpl<$Res, $Val extends MapMarker>
                 ? _value.locationId
                 : locationId // ignore: cast_nullable_to_non_nullable
                       as String,
+            lat: null == lat
+                ? _value.lat
+                : lat // ignore: cast_nullable_to_non_nullable
+                      as double,
+            lng: null == lng
+                ? _value.lng
+                : lng // ignore: cast_nullable_to_non_nullable
+                      as double,
           )
           as $Val,
     );
@@ -97,7 +116,14 @@ abstract class _$$MapMarkerImplCopyWith<$Res>
   ) = __$$MapMarkerImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String title, String type, String locationId});
+  $Res call({
+    String id,
+    String title,
+    String type,
+    String locationId,
+    double lat,
+    double lng,
+  });
 }
 
 /// @nodoc
@@ -118,6 +144,8 @@ class __$$MapMarkerImplCopyWithImpl<$Res>
     Object? title = null,
     Object? type = null,
     Object? locationId = null,
+    Object? lat = null,
+    Object? lng = null,
   }) {
     return _then(
       _$MapMarkerImpl(
@@ -137,6 +165,14 @@ class __$$MapMarkerImplCopyWithImpl<$Res>
             ? _value.locationId
             : locationId // ignore: cast_nullable_to_non_nullable
                   as String,
+        lat: null == lat
+            ? _value.lat
+            : lat // ignore: cast_nullable_to_non_nullable
+                  as double,
+        lng: null == lng
+            ? _value.lng
+            : lng // ignore: cast_nullable_to_non_nullable
+                  as double,
       ),
     );
   }
@@ -150,6 +186,8 @@ class _$MapMarkerImpl implements _MapMarker {
     required this.title,
     required this.type,
     required this.locationId,
+    required this.lat,
+    required this.lng,
   });
 
   factory _$MapMarkerImpl.fromJson(Map<String, dynamic> json) =>
@@ -163,10 +201,14 @@ class _$MapMarkerImpl implements _MapMarker {
   final String type;
   @override
   final String locationId;
+  @override
+  final double lat;
+  @override
+  final double lng;
 
   @override
   String toString() {
-    return 'MapMarker(id: $id, title: $title, type: $type, locationId: $locationId)';
+    return 'MapMarker(id: $id, title: $title, type: $type, locationId: $locationId, lat: $lat, lng: $lng)';
   }
 
   @override
@@ -178,12 +220,15 @@ class _$MapMarkerImpl implements _MapMarker {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.locationId, locationId) ||
-                other.locationId == locationId));
+                other.locationId == locationId) &&
+            (identical(other.lat, lat) || other.lat == lat) &&
+            (identical(other.lng, lng) || other.lng == lng));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, type, locationId);
+  int get hashCode =>
+      Object.hash(runtimeType, id, title, type, locationId, lat, lng);
 
   /// Create a copy of MapMarker
   /// with the given fields replaced by the non-null parameter values.
@@ -205,6 +250,8 @@ abstract class _MapMarker implements MapMarker {
     required final String title,
     required final String type,
     required final String locationId,
+    required final double lat,
+    required final double lng,
   }) = _$MapMarkerImpl;
 
   factory _MapMarker.fromJson(Map<String, dynamic> json) =
@@ -218,6 +265,10 @@ abstract class _MapMarker implements MapMarker {
   String get type;
   @override
   String get locationId;
+  @override
+  double get lat;
+  @override
+  double get lng;
 
   /// Create a copy of MapMarker
   /// with the given fields replaced by the non-null parameter values.
