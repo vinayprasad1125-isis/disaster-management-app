@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../viewmodels/sos_viewmodel.dart';
 import '../../../../models/sos_model.dart';
 import '../../../offline_communication/presentation/widgets/sos_bottom_sheet.dart';
+import 'package:go_router/go_router.dart';
 
 class SOSScreen extends ConsumerStatefulWidget {
   const SOSScreen({super.key});
@@ -191,6 +192,24 @@ class _SOSScreenState extends ConsumerState<SOSScreen>
                   'Tap the button to alert emergency services.',
                   style: Theme.of(context).textTheme.titleMedium,
                   textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 32),
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton.icon(
+                    onPressed: () {
+                      if (context.mounted) {
+                        context.push('/offline_walkie_talkie/home');
+                      }
+                    },
+                    icon: const Icon(Icons.radio),
+                    label: const Text('📻 Offline Walkie-Talkie'),
+                    style: FilledButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+                    ),
+                  ),
                 ),
               ],
             ],

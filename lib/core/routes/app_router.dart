@@ -25,6 +25,14 @@ import '../../features/offline_communication/presentation/screens/nearby_devices
 import '../../features/offline_communication/presentation/screens/emergency_calling_screen.dart';
 import '../../features/offline_communication/presentation/screens/emergency_chat_screen.dart';
 
+// Offline Walkie Talkie Feature
+import '../../features/offline_walkie_talkie/presentation/screens/walkie_talkie_home_screen.dart';
+import '../../features/offline_walkie_talkie/presentation/screens/searching_screen.dart';
+import '../../features/offline_walkie_talkie/presentation/screens/nearby_devices_screen.dart' as wt_devices;
+import '../../features/offline_walkie_talkie/presentation/screens/incoming_connection_screen.dart';
+import '../../features/offline_walkie_talkie/presentation/screens/walkie_talkie_screen.dart';
+import '../../features/offline_walkie_talkie/presentation/screens/call_history_screen.dart';
+
 // Assuming an auth provider exists to check if user is logged in
 // For now, we simulate an unauthenticated state for route guards
 final authStateProvider = StateProvider<bool>((ref) => false);
@@ -176,6 +184,31 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           final peerName = state.extra as String? ?? 'Unknown Peer';
           return EmergencyChatScreen(peerName: peerName);
         },
+      ),
+      // Offline Walkie Talkie Feature
+      GoRoute(
+        path: '/offline_walkie_talkie/home',
+        builder: (context, state) => const WalkieTalkieHomeScreen(),
+      ),
+      GoRoute(
+        path: '/offline_walkie_talkie/search',
+        builder: (context, state) => const SearchingScreen(),
+      ),
+      GoRoute(
+        path: '/offline_walkie_talkie/devices',
+        builder: (context, state) => const wt_devices.NearbyDevicesScreen(),
+      ),
+      GoRoute(
+        path: '/offline_walkie_talkie/incoming',
+        builder: (context, state) => const IncomingConnectionScreen(),
+      ),
+      GoRoute(
+        path: '/offline_walkie_talkie/chat',
+        builder: (context, state) => const WalkieTalkieScreen(),
+      ),
+      GoRoute(
+        path: '/offline_walkie_talkie/history',
+        builder: (context, state) => const CallHistoryScreen(),
       ),
     ],
   );

@@ -42,6 +42,12 @@ dependencies:
   flutter_map: ^8.3.1
   latlong2: ^0.10.1
   tflite_flutter: ^0.11.0
+  
+  # Walkie-Talkie Dependencies
+  nearby_connections: ^4.3.0
+  record: ^6.0.0
+  flutter_sound: ^9.2.13
+  geolocator: ^11.0.0
 
 dev_dependencies:
   flutter_test:
