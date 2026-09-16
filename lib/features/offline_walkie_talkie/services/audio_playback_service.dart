@@ -8,6 +8,7 @@ class AudioPlaybackService {
   static const _methodChannel = MethodChannel('com.disasterapp/audio');
 
   bool _isPlaying = false;
+  bool _isStarting = false;
   bool get isPlaying => _isPlaying;
 
   Future<void> init() async {
@@ -15,10 +16,15 @@ class AudioPlaybackService {
   }
 
   Future<void> startPlayingStream() async {
-    if (_isPlaying) return;
+    if (_isPlaying || _isStarting) return;
+    _isStarting = true;
     debugPrint('[AudioPlayback] startPlayback sent to native');
-    await _methodChannel.invokeMethod('startPlayback');
-    _isPlaying = true;
+    try {
+      await _methodChannel.invokeMethod('startPlayback');
+      _isPlaying = true;
+    } finally {
+      _isStarting = false;
+    }
   }
 
   Future<void> playAudioPacket(Uint8List data) async {

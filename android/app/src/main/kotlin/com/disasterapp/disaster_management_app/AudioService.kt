@@ -10,6 +10,7 @@ import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
 
 /**
  * Native Android audio service for walkie-talkie PTT.
@@ -44,6 +45,8 @@ class AudioService(private val scope: CoroutineScope) :
 
     // ── Playback ─────────────────────────────────────────────────────────────
     private var audioTrack: AudioTrack? = null
+    private var playbackChannel: Channel<ByteArray>? = null
+    private var playbackJob: Job? = null
 
     // ── EventChannel (capture → Dart) ─────────────────────────────────────
     override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
@@ -98,13 +101,26 @@ class AudioService(private val scope: CoroutineScope) :
 
         captureJob = scope.launch(Dispatchers.IO) {
             val frame = ByteArray(FRAME_SIZE)
-            while (isActive) {
-                val read = audioRecord?.read(frame, 0, frame.size) ?: break
-                if (read > 0) {
-                    val chunk = frame.copyOf(read)
-                    withContext(Dispatchers.Main) {
-                        eventSink?.success(chunk)
+            val record = audioRecord
+            try {
+                while (isActive && record != null) {
+                    val read = record.read(frame, 0, frame.size)
+                    if (read > 0) {
+                        val chunk = frame.copyOf(read)
+                        withContext(Dispatchers.Main) {
+                            eventSink?.success(chunk)
+                        }
+                    } else if (read < 0) {
+                        break
                     }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "AudioRecord read exception", e)
+            } finally {
+                try {
+                    record?.release()
+                } catch (e: Exception) {
+                    Log.e(TAG, "AudioRecord release exception", e)
                 }
             }
             Log.d(TAG, "Capture loop ended")
@@ -114,9 +130,13 @@ class AudioService(private val scope: CoroutineScope) :
     private fun stopCapture(result: MethodChannel.Result) {
         captureJob?.cancel()
         captureJob = null
-        audioRecord?.stop()
-        audioRecord?.release()
+        val record = audioRecord
         audioRecord = null
+        try {
+            record?.stop()
+        } catch (e: Exception) {
+            Log.e(TAG, "AudioRecord stop exception", e)
+        }
         result.success(null)
     }
 
@@ -129,7 +149,7 @@ class AudioService(private val scope: CoroutineScope) :
         val bufSize = maxOf(minBuf, SAMPLE_RATE * 2 / 2)
         Log.d(TAG, "startPlayback: minBuf=$minBuf bufSize=$bufSize")
 
-        audioTrack = AudioTrack(
+        val track = AudioTrack(
             AudioManager.STREAM_MUSIC,   // Routes to loudspeaker (VOICE_CALL uses earpiece)
             SAMPLE_RATE,
             CHANNEL_OUT,
@@ -138,30 +158,47 @@ class AudioService(private val scope: CoroutineScope) :
             AudioTrack.MODE_STREAM
         )
 
-        if (audioTrack!!.state != AudioTrack.STATE_INITIALIZED) {
+        if (track.state != AudioTrack.STATE_INITIALIZED) {
             Log.e(TAG, "AudioTrack init failed")
             result.error("INIT_ERROR", "AudioTrack init failed", null)
-            audioTrack = null
             return
         }
 
-        audioTrack!!.play()
+        track.play()
+        audioTrack = track
         Log.d(TAG, "AudioTrack playing")
+        
+        val channel = Channel<ByteArray>(Channel.UNLIMITED)
+        playbackChannel = channel
+
+        playbackJob = scope.launch(Dispatchers.IO) {
+            try {
+                for (chunk in channel) {
+                    track.write(chunk, 0, chunk.size)
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "AudioTrack write exception", e)
+            } finally {
+                try {
+                    track.release()
+                } catch (e: Exception) {
+                    Log.e(TAG, "AudioTrack release exception", e)
+                }
+            }
+        }
+
         result.success(null)
     }
 
     private fun playChunk(data: ByteArray, result: MethodChannel.Result) {
-        val track = audioTrack
-        if (track == null || track.playState != AudioTrack.PLAYSTATE_PLAYING) {
-            Log.w(TAG, "playChunk: AudioTrack not ready, dropping ${data.size} bytes")
+        val channel = playbackChannel
+        if (channel == null || channel.isClosedForSend) {
+            Log.w(TAG, "playChunk: channel not ready, dropping ${data.size} bytes")
             result.success(null)
             return
         }
-        Log.d(TAG, "playChunk: writing ${data.size} bytes")
-        scope.launch(Dispatchers.IO) {
-            track.write(data, 0, data.size)
-            withContext(Dispatchers.Main) { result.success(null) }
-        }
+        channel.trySend(data)
+        result.success(null)
     }
 
     private fun stopPlayback(result: MethodChannel.Result) {
@@ -170,18 +207,26 @@ class AudioService(private val scope: CoroutineScope) :
     }
 
     private fun stopPlaybackInternal() {
-        try {
-            audioTrack?.stop()
-        } catch (_: Exception) {}
-        audioTrack?.release()
+        playbackChannel?.close()
+        playbackChannel = null
+        playbackJob?.cancel()
+        playbackJob = null
+        val track = audioTrack
         audioTrack = null
+        try {
+            track?.stop()
+        } catch (e: Exception) {
+            Log.e(TAG, "AudioTrack stop exception", e)
+        }
     }
 
     fun dispose() {
         captureJob?.cancel()
-        audioRecord?.stop()
-        audioRecord?.release()
+        val record = audioRecord
         audioRecord = null
+        try {
+            record?.stop()
+        } catch (e: Exception) {}
         stopPlaybackInternal()
     }
 }

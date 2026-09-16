@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:flutter_map_cache/flutter_map_cache.dart';
+import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
+import 'package:dio_cache_interceptor_file_store/dio_cache_interceptor_file_store.dart';
+import 'package:path_provider/path_provider.dart';
 // Removed dart:html for mobile build compatibility
 import '../../../../viewmodels/map_viewmodel.dart';
 import '../../../../shared/widgets/custom_error_widget.dart';
@@ -22,13 +26,25 @@ class _MapScreenState extends ConsumerState<MapScreen> {
   LatLng? _userLocation;
   bool _isLocating = false;
   String? _locationError;
+  CacheStore? _cacheStore;
 
   @override
   void initState() {
     super.initState();
+    _initCacheStore();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(mapViewModelProvider.notifier).fetchMarkers(0.0, 0.0, 10.0);
     });
+  }
+
+  Future<void> _initCacheStore() async {
+    final dir = await getApplicationDocumentsDirectory();
+    final path = '${dir.path}/map_tiles_cache';
+    if (mounted) {
+      setState(() {
+        _cacheStore = FileCacheStore(path);
+      });
+    }
   }
 
   @override
@@ -109,12 +125,16 @@ class _MapScreenState extends ConsumerState<MapScreen> {
               maxZoom: 18,
             ),
             children: [
-              // OpenStreetMap Tile Layer
-              TileLayer(
-                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                userAgentPackageName: 'com.example.disaster_management_app',
-                maxNativeZoom: 19,
-              ),
+              // OpenStreetMap Tile Layer (cached for offline use)
+              if (_cacheStore != null)
+                TileLayer(
+                  urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  userAgentPackageName: 'com.example.disaster_management_app',
+                  maxNativeZoom: 19,
+                  tileProvider: CachedTileProvider(
+                    store: _cacheStore!,
+                  ),
+                ),
               // Disaster Marker Layer
               mapState.when(
                 data: (markers) => MarkerLayer(
