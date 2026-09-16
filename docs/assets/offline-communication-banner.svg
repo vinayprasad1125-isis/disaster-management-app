@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" role="img" aria-labelledby="title desc">
+  <title id="title">Offline emergency communication</title>
+  <desc id="desc">Animated radio signal connecting emergency responders when the network is unavailable.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#071b2f"/>
+      <stop offset="1" stop-color="#123b4a"/>
+    </linearGradient>
+    <linearGradient id="signal" x1="0" x2="1">
+      <stop offset="0" stop-color="#5de1c6" stop-opacity="0.1"/>
+      <stop offset="0.5" stop-color="#5de1c6"/>
+      <stop offset="1" stop-color="#ffcf70" stop-opacity="0.1"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="1200" height="420" rx="28" fill="url(#bg)"/>
+  <path d="M0 335 C220 285 330 380 520 330 S840 265 1200 335 V420 H0Z" fill="#0b293d" opacity="0.9"/>
+  <g fill="none" stroke="url(#signal)" stroke-linecap="round" filter="url(#glow)">
+    <path d="M440 210 H760" stroke-width="4" stroke-dasharray="16 18">
+      <animate attributeName="stroke-dashoffset" from="70" to="0" dur="1.5s" repeatCount="indefinite"/>
+    </path>
+    <path d="M500 155 C575 95 625 95 700 155" stroke-width="4" stroke-dasharray="12 18">
+      <animate attributeName="stroke-dashoffset" from="60" to="0" dur="1.2s" repeatCount="indefinite"/>
+    </path>
+    <path d="M500 265 C575 325 625 325 700 265" stroke-width="4" stroke-dasharray="12 18">
+      <animate attributeName="stroke-dashoffset" from="60" to="0" dur="1.2s" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g transform="translate(355 145)">
+    <circle cx="85" cy="65" r="72" fill="#123f50" stroke="#5de1c6" stroke-width="3"/>
+    <path d="M85 24 V100 M50 53 C69 35 101 35 120 53 M38 39 C64 14 106 14 132 39" fill="none" stroke="#5de1c6" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="85" cy="65" r="10" fill="#ffcf70">
+      <animate attributeName="r" values="8;13;8" dur="1.4s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  <g transform="translate(760 145)">
+    <circle cx="85" cy="65" r="72" fill="#403a2a" stroke="#ffcf70" stroke-width="3"/>
+    <path d="M57 43 H113 A10 10 0 0 1 123 53 V85 A10 10 0 0 1 113 95 H78 L60 110 V95 H57 A10 10 0 0 1 47 85 V53 A10 10 0 0 1 57 43Z" fill="#ffcf70"/>
+    <circle cx="70" cy="69" r="5" fill="#403a2a"/>
+    <circle cx="85" cy="69" r="5" fill="#403a2a"/>
+    <circle cx="100" cy="69" r="5" fill="#403a2a"/>
+  </g>
+  <text x="600" y="76" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="34" font-weight="700">Communication when networks fail</text>
+  <text x="600" y="112" text-anchor="middle" fill="#b9d8dc" font-family="sans-serif" font-size="18">Nearby discovery  |  voice  |  emergency chat  |  SOS</text>
+  <text x="600" y="382" text-anchor="middle" fill="#5de1c6" font-family="sans-serif" font-size="16" letter-spacing="2">DISASTER MANAGEMENT APP</text>
+</svg>

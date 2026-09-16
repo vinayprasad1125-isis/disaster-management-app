@@ -7,16 +7,16 @@ const errorHandler = require('./middlewares/errorHandler');
 const logger = require('./utils/logger');
 
 // Route Imports
-const authRoutes = require('./routes/auth.routes');
-const userRoutes = require('./routes/user.routes');
-const sosRoutes = require('./routes/sos.routes');
-const reportRoutes = require('./routes/report.routes');
-const shelterRoutes = require('./routes/shelter.routes');
-const mapRoutes = require('./routes/map.routes');
-const weatherRoutes = require('./routes/weather.routes');
-const notificationRoutes = require('./routes/notification.routes');
-const aiRoutes = require('./routes/ai.routes');
-const uploadRoutes = require('./routes/upload.routes');
+const authRoutes = require('./modules/auth/auth.routes');
+const userRoutes = require('./modules/users/users.routes');
+const sosRoutes = require('./modules/sos/sos.routes');
+const reportRoutes = require('./modules/reports/reports.routes');
+const shelterRoutes = require('./modules/shelters/shelters.routes');
+const mapRoutes = require('./modules/maps/maps.routes');
+const weatherRoutes = require('./modules/weather/weather.routes');
+const notificationRoutes = require('./modules/notifications/notifications.routes');
+const aiRoutes = require('./modules/ai/ai.routes');
+const uploadRoutes = require('./modules/upload/upload.routes');
 
 const app = express();
 
